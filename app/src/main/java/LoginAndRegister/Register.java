@@ -50,7 +50,9 @@ public class Register extends AppCompatActivity {
     }
 
 
-    private void Init
+    private void Init() {
+        
+    }
 
 
 
