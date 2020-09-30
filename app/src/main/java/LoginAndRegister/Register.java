@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class Register extends AppCompatActivity {
     private FirebaseDatabase firebaseD;
     private FirebaseContext FContext;
     //widgets
+    private TextView loadingRegisterText;
     private Context mContext;
     private EditText mEmail,mUsername,mPassword;
     private String email, username, password;
@@ -65,6 +67,8 @@ public class Register extends AppCompatActivity {
 
                 if(checkInputs(email,username,password)) {
                     RegisterprogressBar.setVisibility(View.VISIBLE);
+                    loadingRegisterText.setVisibility(View.VISIBLE);
+
                 }
             }
         });
