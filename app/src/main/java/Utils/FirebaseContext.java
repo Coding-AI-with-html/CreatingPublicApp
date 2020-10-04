@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.something.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -13,6 +14,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import modules.Users;
+import modules.user_account_settings;
 
 import static android.content.ContentValues.TAG;
 
@@ -78,5 +82,29 @@ public class FirebaseContext {
                         }
                     });
         }
+    }
+
+    /**
+     * adding new user
+     */
+
+    public void addNewUser(String email, String username, String profile_photo){
+
+        Users FUsers = new Users(userUID, 864870649, email, StringManipulation.condensUsername(username));
+
+        DataRefs.child("users")
+                .child(userUID)
+                .setValue(FUsers);
+
+        user_account_settings settings = new user_account_settings(
+                username,
+                profile_photo,
+                username
+        );
+        DataRefs.child(mContext.getString(R.string.dataname_user_account_settings))
+                .child(userUID)
+                .setValue(settings);
+
+
     }
 }
