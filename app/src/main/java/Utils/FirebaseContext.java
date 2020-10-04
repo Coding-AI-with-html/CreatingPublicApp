@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -37,6 +38,22 @@ public class FirebaseContext {
         if(mAuth.getCurrentUser() != null){
             userUID = mAuth.getCurrentUser().getUid();
         }
+    }
+
+
+    public boolean checkFusernameExist(String username, DataSnapshot dataSnapshot) {
+        Log.d(TAG, "checkFusernameExist: checking if " + username + "already exist");
+        Users users = new Users();
+        for(DataSnapshot ds: dataSnapshot.child(userUID).getChildren()) {
+            Log.d(TAG, "checkFusernameExist: datasnapshot" + ds);
+            users.setUsername(ds.getValue(Users.class).getUsername());
+            Log.d(TAG, "checkFusernameExist: username" + users.getUsername());
+            if(StringManipulation.expandUsername(users.getUsername()).equals(username));
+            Log.d(TAG, "checkFusernameExist: found username match" + users.getUsername());
+            return true;
+        }
+        return false;
+
     }
 
     public void registerNewUser(final String email, String password, final String username) {
