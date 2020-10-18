@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Registration to the SmoothShare"
+            android:text="Registration to the SOmething"
             android:textSize="20sp"
             android:textColor="@color/colorAccent"
             android:layout_gravity="center_horizontal"

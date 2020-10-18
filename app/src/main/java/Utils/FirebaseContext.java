@@ -41,7 +41,7 @@ public class FirebaseContext {
     }
 
 
-    public boolean checkFusernameExist(String username, DataSnapshot dataSnapshot) {
+    public  boolean checkFusernameExist(String username, DataSnapshot dataSnapshot) {
         Log.d(TAG, "checkFusernameExist: checking if " + username + "already exist");
         Users users = new Users();
         for(DataSnapshot ds: dataSnapshot.child(userUID).getChildren()) {

@@ -30,6 +30,7 @@ public class Register extends AppCompatActivity {
     /**
      * Firebase variables
      */
+    private FirebaseContext firebaseContext;
     private FirebaseAuth mAUth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private DatabaseReference DReference;
@@ -55,31 +56,27 @@ public class Register extends AppCompatActivity {
         Log.d(TAG, "onCreate: started register activity");
         initWidgets();
         Init();
-        setupFirebaseAuthenticator();
+        setupFirebaseAuthentication();
     }
 
 
     private void Init() {
-
-    }
-
-    private void setupFirebaseAuthenticator() {
         btnForRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 email = mEmail.getText().toString();
-                username = mUsername.getText().toString();
                 password = mPassword.getText().toString();
+                username = mUsername.getText().toString();
 
-                if(checkInputs(email,username,password)) {
+                if(checkInputs(email, password, username)){
                     RegisterprogressBar.setVisibility(View.VISIBLE);
-                    loadingRegisterText.setVisibility(View.VISIBLE);
-
+                    FContext.registerNewUser(email, password, username);
                 }
             }
         });
 
     }
+
 
 
     private boolean checkInputs(String email, String password, String username) {
@@ -113,10 +110,10 @@ public class Register extends AppCompatActivity {
     ---------------------FIREBASE CONTENT---------------------
      */
     
-    private boolean checkingString(String string) {
+    private boolean checkingString(String email, String password, String username) {
         Log.d(TAG, "String: checking if string are not epemty");
 
-        if(string.equals("")){
+        if(email.equals("") || password.equals("") || username.equals("")){
             return true;
 
         } else {
@@ -143,7 +140,18 @@ public class Register extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             //checking if user not already taked
-                            if(FirebaseContext.check)
+                            if(firebaseContext.checkFusernameExist(username, dataSnapshot)){
+                                append = DReference.push().getKey().substring(3,10);
+                                Log.d(TAG, "onDataChange: Username already exist" + append);
+
+                            }
+                            username = username+append;
+
+                            firebaseContext.addNewUser(email, username, "");
+                            Log.d(TAG, "onDataChange: Signed in sucssefully" + username);
+                            Toast.makeText(mContext, "Signed in!", Toast.LENGTH_SHORT).show();
+
+                            mAUth.signOut();
                         }
 
                         @Override
@@ -151,6 +159,9 @@ public class Register extends AppCompatActivity {
 
                         }
                     });
+                    finish();
+                } else {
+                    Log.d(TAG, "onAuthStateChanged: signed_out");
                 }
             }
         };
@@ -158,5 +169,15 @@ public class Register extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAUth.addAuthStateListener(mAuthStateListener);
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    mAUth.addAuthStateListener(mAuthStateListener);
+    }
 }
