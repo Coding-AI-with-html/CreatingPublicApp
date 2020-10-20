@@ -1,4 +1,4 @@
-package LoginAndRegister;
+package com.example.something.singup;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -51,7 +51,7 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
 
-        mContext = Register.this;
+        mContext = getApplicationContext();
         FContext = new FirebaseContext(mContext);
         Log.d(TAG, "onCreate: started register activity");
         initWidgets();
@@ -64,6 +64,7 @@ public class Register extends AppCompatActivity {
         btnForRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(mContext, "Newveikia", Toast.LENGTH_SHORT).show();
                 email = mEmail.getText().toString();
                 password = mPassword.getText().toString();
                 username = mUsername.getText().toString();
